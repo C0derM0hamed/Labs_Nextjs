@@ -1,0 +1,6 @@
+1- implement all the Types of Routing 
+2- hide navbar in error page 
+3- use SSG get / get by id [products from dummeyjson] "https://dummyjson.com/products"
+4- add filtration to products {brands}
+5- add search [Bonus --> useTransition - useDeferredValue]
+6- sort products [rating / price]
