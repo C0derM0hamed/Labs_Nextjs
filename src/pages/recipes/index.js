@@ -11,6 +11,8 @@ const index = ({recipes}) => {
 
 export default index;
 export async function getStaticProps(){
+    const dns = require('dns');
+    dns.setDefaultResultOrder('ipv4first');
     const res = await fetch("https://dummyjson.com/recipes")
     const data = await res.json()
     return{

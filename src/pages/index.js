@@ -1,6 +1,18 @@
 import Head from "next/head";
+import { useEffect } from "react";
 
-export default function Home() {
+export default function Home({ quote }) {
+  useEffect(() => {
+    // initialize bootstrap toast
+    if (typeof window !== "undefined") {
+      const { Toast } = require("bootstrap");
+      const toastElList = [].slice.call(document.querySelectorAll(".toast"));
+      toastElList.map(function (toastEl) {
+        return new Toast(toastEl, { autohide: false }).show();
+      });
+    }
+  }, []);
+
   return (
     <>
       <Head>
@@ -9,9 +21,40 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <main className="container mt-5">
         <h1>Nextjs Course</h1>
+
+        <div className="toast-container position-fixed bottom-0 end-0 p-3">
+          <div className="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div className="toast-header">
+              <strong className="me-auto">Daily Quote</strong>
+              <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div className="toast-body">
+              "{quote.quote}" - <strong>{quote.author}</strong>
+            </div>
+          </div>
+        </div>
       </main>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  let quote = { quote: "Loading quote failed.", author: "System" };
+  try {
+    const res = await fetch("https://dummyjson.com/quotes/random", { timeout: 3000 });
+    if (res.ok) {
+      const data = await res.json();
+      quote = data;
+    }
+  } catch (error) {
+    console.error("Failed to fetch quote:", error);
+  }
+  
+  return {
+    props: {
+      quote,
+    },
+  };
 }

@@ -12,7 +12,6 @@ const ID = ({product}) => {
 export default ID;
 
 //ProductPage
-
 export async function getStaticPaths() {
     return{
         paths:[],
@@ -20,6 +19,8 @@ export async function getStaticPaths() {
     }
 }
 export async function getStaticProps(context) {
+    const dns = require('dns');
+    dns.setDefaultResultOrder('ipv4first');
     const {params} = context;
     const res = await fetch(`https://dummyjson.com/products/${params.id}`)
     const data = await res.json()

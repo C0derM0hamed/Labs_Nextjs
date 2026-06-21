@@ -23,6 +23,7 @@ export async function getStaticPaths() {
     }
 }
 export async function  getStaticProps(context) {
+
     const {params} = context;
     const res = await fetch(`https://dummyjson.com/recipes/${params.id}`)
     const data = await res.json()
